@@ -55,7 +55,7 @@ export default function LoginPage() {
 
               <div className="text-center text-lg text-gray-600 mt-8"> {/* Larger text and margin */}
                 <p>Don't have an account?</p>
-                <Link href="/signup" className="text-blue-700 hover:underline font-semibold">
+                <Link href="/sign-up" className="text-blue-700 hover:underline font-semibold">
                   Sign up
                 </Link>
               </div>

@@ -1,6 +1,27 @@
+"use client";
+
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import Image from "next/image"; // Import component Image
+import Image from "next/image";
+import { useRouter } from "next/navigation";
+
+function LoginButton() {
+  const router = useRouter();
+
+  const handleLoginClick = () => {
+    router.push("/login");
+  };
+
+  return (
+    <Button
+      variant="default"
+      className="bg-black text-white hover:bg-gray-800"
+      onClick={handleLoginClick}
+    >
+      Login
+    </Button>
+  );
+}
 
 export default function Header() {
   return (
@@ -23,8 +44,8 @@ export default function Header() {
               </Link>
             </li>
             <li>
-              <Link href="/quiz" className="hover:underline">
-                Quiz
+              <Link href="/skills" className="hover:underline">
+                Skills
               </Link>
             </li>
             <li>
@@ -43,11 +64,7 @@ export default function Header() {
               </Link>
             </li>
             <li>
-              <Link href="/login"> 
-                <Button variant="default" className="bg-black text-white hover:bg-gray-800">
-                  Login
-                </Button>
-              </Link>
+              <LoginButton />
             </li>
           </ul>
         </nav>
