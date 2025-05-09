@@ -13,9 +13,9 @@ export default function ReadingPage() {
 
   // Array of reading lessons for easy expansion
   const readingLessons = [
-    { id: 1, title: "Lesson 1", level: "Beginner", description: "Basic greetings and introductions" },
+    { id: 1, title: "Lesson 1", level: "Beginner", description: "People and places" },
     { id: 2, title: "Lesson 2", level: "Intermedia", description: "Daily routines and activities" },
-    { id: 3, title: "Lesson 3", level: "Hard", description: "Food and restaurants" },
+    { id: 3, title: "Lesson 3", level: "Hard", description: "Manga" },
   ]
 
   return (

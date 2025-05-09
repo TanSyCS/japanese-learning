@@ -5,231 +5,216 @@ import { useState } from "react";
 
 export default function Reading3Page() {
   const router = useRouter();
-  const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
-  const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
-  const [showTranslation, setShowTranslation] = useState(false);
-  const [showTip, setShowTip] = useState(false);
+  const [answers, setAnswers] = useState<Record<number, string>>({});
+  const [results, setResults] = useState<Record<number, boolean | null>>({});
+  const [showResults, setShowResults] = useState(false);
 
   const handleGoBack = () => {
     router.back();
   };
 
-  const handleAnswerSelect = (answer: string) => {
-    setSelectedAnswer(answer);
-    setIsCorrect(null);
-    setShowTranslation(false);
-    setShowTip(false);
+  const handleAnswerSelect = (questionNumber: number, answer: string) => {
+    setAnswers({ ...answers, [questionNumber]: answer });
+    setResults({ ...results, [questionNumber]: null }); // Reset result on new selection
   };
 
-  const handleCheckAnswer = () => {
-    if (selectedAnswer === "cooking") {
-      setIsCorrect(true);
-    } else {
-      setIsCorrect(false);
-    }
-    setShowTranslation(true);
-    setShowTip(true);
-  };
-
-  const handleNextLesson = () => {
-    router.push("/skills/reading/lesson4"); // Assuming you'll have a Lesson 4
-  };
-
-  const handleTryAgain = () => {
-    setSelectedAnswer(null);
-    setIsCorrect(null);
-    setShowTranslation(false);
-    setShowTip(false);
+  const checkAnswers = () => {
+    const newResults: Record<number, boolean> = {};
+    newResults[1] = answers[1] === "d";
+    newResults[2] = answers[2] === "c";
+    newResults[3] = answers[3] === "b";
+    newResults[4] = answers[4] === "b";
+    newResults[5] = answers[5] === "b";
+    setResults(newResults);
+    setShowResults(true);
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   const readingText = `
-私の趣味は料理です。週末によく新しいレシピを試します。
-先週はイタリア料理を作りました。トマトソースとパスタがとても美味しかったです。
-今週末は何を作ろうか考えています。家族も楽しんでくれると嬉しいです。
+「まんが」
+
+日本では子供のためのまんがから大人も楽しめるまんがまで、いろいろなまんがが売られています。絵がじょうずだということや、話がおもしろいのですが、「この後どうなるのだろう？」と思うと、どうしても止めることができなくなるほどです。
+
+人気があるまんがから映画やテレビのばんぐみが生まれることもあります。今では「MANGA」となって世界中で日本のまんがが読まれています。
   `;
 
   const readingTranslation = `
-My hobby is cooking. I often try new recipes on weekends.
-Last week, I made Italian food. The tomato sauce and pasta were very delicious.
-I'm thinking about what to make this weekend. I hope my family will enjoy it too.
+"Manga"
+
+In Japan, there are various manga sold, from manga for children to manga that adults can also enjoy. What makes them appealing is not only the skillful illustrations and interesting stories, but also the feeling that once you wonder, "What will happen next?", you become so engrossed that you can't stop reading.
+
+Sometimes, popular manga are adapted into movies and TV shows. Nowadays, Japanese manga are read all over the world under the name "MANGA".
   `;
 
-  const question = "What is the person's hobby?";
-  const correctAnswer = "cooking";
-  const answerChoices = ["reading", "gardening", "cooking", "traveling"];
+  const questions = [
+    {
+      number: 1,
+      text: "まんがは、どのくらいおもしろいですか。",
+      translation: "How interesting is manga?",
+      options: [
+        { key: "a", value: "世界中で読まれているほどおもしろいです。", translation: "It is as interesting as it is read all over the world." },
+        { key: "b", value: "とちゅうで止めることができないほどおもしろいです。", translation: "It is so interesting that you cannot stop reading in the middle." },
+        { key: "c", value: "この後どうなるのだろうと思うほどおもしろいです。", translation: "It is so interesting that you wonder what will happen next." },
+        { key: "d", value: "子供だけでなく、大人も読むほどおもしろいです。", translation: "It is so interesting that not only children but also adults read it." },
+      ],
+      correctAnswer: "d",
+    },
+    {
+      number: 2,
+      text: "日本のまんがが売られているのは、誰のためですか。",
+      translation: "Who are Japanese manga sold for?",
+      options: [
+        { key: "a", value: "ただ子供のため", translation: "Only for children" },
+        { key: "b", value: "ただ大人のため", translation: "Only for adults" },
+        { key: "c", value: "子供から大人まで", translation: "From children to adults" },
+        { key: "d", value: "ただ外国人ため", translation: "Only for foreigners" },
+      ],
+      correctAnswer: "c",
+    },
+    {
+      number: 3,
+      text: "日本のまんがが人気がある理由は何ですか。",
+      translation: "What is the reason why Japanese manga are popular?",
+      options: [
+        { key: "a", value: "絵が下手だから", translation: "Because the illustrations are bad" },
+        { key: "b", value: "話がおもしろいから", translation: "Because the stories are interesting" },
+        { key: "c", value: "高いから", translation: "Because they are expensive" },
+        { key: "d", value: "読みにくいから", translation: "Because they are difficult to read" },
+      ],
+      correctAnswer: "b",
+    },
+    {
+      number: 4,
+      text: "人気があるまんがから何が生まれることがありますか。",
+      translation: "What can be created from popular manga?",
+      options: [
+        { key: "a", value: "音楽", translation: "Music" },
+        { key: "b", value: "映画やテレビのばんぐみ", translation: "Movies and TV shows" },
+        { key: "c", value: "ゲーム", translation: "Games" },
+        { key: "d", value: "本", translation: "Books" },
+      ],
+      correctAnswer: "b",
+    },
+    {
+      number: 5,
+      text: "日本のまんがは今、世界中で何と呼ばれていますか。",
+      translation: "What are Japanese manga called around the world now?",
+      options: [
+        { key: "a", value: "ANIME", translation: "Anime" },
+        { key: "b", value: "MANGA", translation: "Manga" },
+        { key: "c", value: "NOVEL", translation: "Novel" },
+        { key: "d", value: "DRAMA", translation: "Drama" },
+      ],
+      correctAnswer: "b",
+    },
+  ];
 
-  const readingTip =
-    "The first sentence, '私の趣味は料理です。' (Watashi no shumi wa ryouri desu.), directly states the person's hobby. Look for such direct statements when answering comprehension questions.";
+  const isAllAnswered = Object.keys(answers).length === questions.length;
+  const score = Object.values(results).filter((res) => res === true).length;
 
   return (
     <main className="min-h-screen bg-gray-50">
-      <div className="container mx-auto px-4 py-8 max-w-3xl">
-        <div className="flex justify-between items-center mb-6">
+      <div className="container mx-auto px-4 py-8 max-w-2xl">
+        <div className="flex justify-start mb-6">
           <button
             onClick={handleGoBack}
-            className="text-gray-600 hover:text-gray-900 flex items-center transition-colors duration-200 font-medium group"
+            className="text-gray-600 hover:text-gray-900 flex items-center transition-colors duration-200 font-medium"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              className="h-5 w-5 mr-2 group-hover:-translate-x-1 transition-transform duration-200"
+              className="h-5 w-5 mr-2"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
             >
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M15 19l-7-7 7-7"
+              />
             </svg>
             Back
           </button>
-
-          <span className="text-sm text-blue-600 font-medium">Reading Exercise</span>
         </div>
 
-        <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-gray-800 mb-2">Lesson 3: Comprehension</h1>
-          <p className="text-gray-600">Read the text and answer the question</p>
+        <h1 className="text-2xl font-bold text-center mb-8">Lesson 3: Reading Comprehension</h1>
+
+        <div className="bg-white rounded-lg shadow-md p-6 mb-8">
+          <h2 className="text-lg font-semibold text-gray-800 mb-3">Read the following text:</h2>
+          <p className="text-lg font-japanese leading-relaxed">{readingText}</p>
+          {showResults && (
+            <details className="text-sm text-gray-600 mt-2 open">
+              <summary className="cursor-pointer hover:text-blue-600 transition-colors">Translation</summary>
+              <p className="mt-2 p-3 bg-gray-50 rounded-md">{readingTranslation}</p>
+            </details>
+          )}
+          {!showResults && (
+            <details className="text-sm text-gray-600 mt-2">
+              <summary className="cursor-pointer hover:text-blue-600 transition-colors">Translation</summary>
+            </details>
+          )}
         </div>
 
-        {isCorrect !== null && (
-          <div
-            className={`mb-8 p-6 rounded-xl border ${
-              isCorrect ? "bg-green-50 border-green-200" : "bg-red-50 border-red-200"
+        <h2 className="text-xl font-semibold text-gray-800 mb-4">Answer the following questions:</h2>
+
+        <div className="space-y-6">
+          {questions.map((question) => (
+            <div key={question.number} className="bg-white rounded-lg shadow-md p-6">
+              <p className="mb-3 font-semibold">{question.number}. {question.text}</p>
+              {showResults && <p className="text-sm text-gray-500 mb-1">{question.translation}</p>}
+              <div className="space-y-2">
+                {question.options.map((option) => (
+                  <label
+                    key={option.key}
+                    className={`flex items-center cursor-pointer rounded-md p-2 ${
+                      answers[question.number] === option.key ? "bg-blue-100 border border-blue-300" : "hover:bg-gray-50"
+                    }`}
+                  >
+                    <input
+                      type="radio"
+                      name={`question-${question.number}`}
+                      value={option.key}
+                      checked={answers[question.number] === option.key}
+                      onChange={() => handleAnswerSelect(question.number, option.key)}
+                      className="form-radio h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300"
+                      disabled={showResults}
+                    />
+                    <span className="ml-2">{option.value} {showResults && <span className="text-sm text-gray-500">({option.translation})</span>}</span>
+                  </label>
+                ))}
+              </div>
+              {showResults && results[question.number] !== null && (
+                <p className={`mt-2 text-sm font-semibold ${results[question.number] ? "text-green-600" : "text-red-600"}`}>
+                  {results[question.number] ? "Correct!" : "Incorrect"}
+                </p>
+              )}
+            </div>
+          ))}
+        </div>
+
+        {!showResults && (
+          <button
+            onClick={checkAnswers}
+            disabled={!isAllAnswered}
+            className={`w-full mt-8 py-3 px-6 rounded-lg font-semibold text-white transition-colors duration-200 ${
+              isAllAnswered ? "bg-blue-600 hover:bg-blue-700" : "bg-gray-400 cursor-not-allowed"
             }`}
           >
-            <div className="flex items-start">
-              <div
-                className={`flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center mr-4 ${
-                  isCorrect ? "bg-green-100 text-green-600" : "bg-red-100 text-red-600"
-                }`}
-              >
-                {isCorrect ? (
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-6 w-6"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                  </svg>
-                ) : (
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-6 w-6"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                  </svg>
-                )}
-              </div>
-              <div>
-                <h3 className={`text-lg font-semibold ${isCorrect ? "text-green-800" : "text-red-800"}`}>
-                  {isCorrect ? "Correct!" : "Incorrect"}
-                </h3>
-                <p className={`text-sm ${isCorrect ? "text-green-700" : "text-red-700"}`}>
-                  {isCorrect
-                    ? "That's right! The person's hobby is cooking."
-                    : `The correct answer is "cooking". The first sentence clearly states, '私の趣味は料理です。'`}
-                </p>
-              </div>
-            </div>
-
-            <div className="flex justify-end mt-4 space-x-3">
-              <button
-                onClick={handleTryAgain}
-                className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50"
-              >
-                Try Again
-              </button>
-              <button
-                onClick={handleNextLesson}
-                className="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700"
-              >
-                Next Lesson
-              </button>
-            </div>
-          </div>
+            Check Answers
+          </button>
         )}
 
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 mb-8">
-          <h2 className="text-lg font-semibold text-gray-800 mb-3">Read the following text:</h2>
-          <div className="mb-4">
-            <p className="text-xl leading-relaxed text-gray-900 mb-3 font-japanese">{readingText}</p>
-            {showTranslation && (
-              <details className="text-sm text-gray-600 open">
-                <summary className="cursor-pointer hover:text-blue-600 transition-colors">Show Translation</summary>
-                <p className="mt-2 p-3 bg-gray-50 rounded-md">{readingTranslation}</p>
-              </details>
-            )}
-            {!showTranslation && (
-              <details className="text-sm text-gray-600">
-                <summary className="cursor-pointer hover:text-blue-600 transition-colors">Show Translation</summary>
-              </details>
-            )}
-          </div>
-        </div>
-
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 mb-8">
-          <h2 className="text-lg font-semibold text-gray-800 mb-3">{question}</h2>
-          <div className="mt-4 space-y-2">
-            {answerChoices.map((choice) => (
-              <button
-                key={choice}
-                onClick={() => handleAnswerSelect(choice)}
-                className={`w-full py-2 px-4 rounded-md text-left transition-colors duration-200 ${
-                  selectedAnswer === choice
-                    ? "bg-blue-100 text-blue-800 border border-blue-300"
-                    : "bg-gray-50 hover:bg-gray-100 text-gray-800 border border-gray-200"
-                }`}
-              >
-                {choice}
-              </button>
-            ))}
-          </div>
-        </div>
-
-        <div className="flex justify-end">
-          <button
-            onClick={handleCheckAnswer}
-            disabled={selectedAnswer === null}
-            className={`flex items-center bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-200 ${
-              selectedAnswer === null ? "opacity-50 cursor-not-allowed" : ""
-            }`}
-          >
-            Check Answer
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-5 w-5 ml-2"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
+        {showResults && (
+          <div className="mt-8 p-4 bg-gray-100 rounded-md">
+            <h2 className="text-xl font-semibold text-gray-800 mb-2">Results</h2>
+            <p className="text-lg">Your score: {score} / {questions.length}</p>
+            <button
+              onClick={() => router.push("/skills/reading")}
+              className="mt-4 py-2 px-4 rounded-md bg-blue-500 hover:bg-blue-600 text-white font-semibold"
             >
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-            </svg>
-          </button>
-        </div>
-
-        {showTip && (
-          <div className="mt-10 bg-blue-50 border border-blue-200 rounded-lg p-5">
-            <h3 className="text-md font-medium text-blue-800 mb-2 flex items-center">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-5 w-5 mr-2"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                />
-              </svg>
-              Reading Tip
-            </h3>
-            <p className="text-sm text-blue-700">{readingTip}</p>
+              Back to Lessons
+            </button>
           </div>
         )}
       </div>
