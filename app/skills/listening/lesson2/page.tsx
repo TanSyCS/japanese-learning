@@ -15,9 +15,10 @@ interface Question {
 }
 
 const questions: Question[] = [
-  { id: 1, placeholder: "(1) ...", correctAnswer: "日本語" }, // Japanese
-  { id: 2, placeholder: "(2) ...", correctAnswer: "とても" }, // Very
-  { id: 3, placeholder: "(3) ...", correctAnswer: "大丈夫" }, // OK
+  { id: 1, placeholder: " ...", correctAnswer: "日本語" }, 
+  { id: 2, placeholder: " ...", correctAnswer: "大丈夫" },
+  { id: 3, placeholder: " ...", correctAnswer: "とても" }, 
+ // OK
 ];
 
 export default function ListeningLessonTwoPage() {
@@ -234,30 +235,29 @@ export default function ListeningLessonTwoPage() {
                 <br />
                 [メールを読み、お元気ですか]
                 <br />
-                “Yuuki-san, oge'nki de'su ka.”
               </p>
               <p>
                 タム：ワタシの日本語、
                 <br />
                 <input
                   type="text"
-                  value={answers[3] || ""}
-                  onChange={(e) => handleAnswerChange(3, e.target.value)}
+                  value={answers[2] || ""}
+                  onChange={(e) => handleAnswerChange(2, e.target.value)}
                   placeholder={questions[2].placeholder}
                   className="inline-block w-28 border-b-2 border-gray-300 focus:outline-none focus:border-blue-500 text-center bg-gray-50 px-1"
                 />
-                (3)ですか。
+                (2)ですか。
               </p>
               <p>
                 ハル：
                 <input
                   type="text"
-                  value={answers[2] || ""}
-                  onChange={(e) => handleAnswerChange(2, e.target.value)}
+                  value={answers[3] || ""}
+                  onChange={(e) => handleAnswerChange(3, e.target.value)}
                   placeholder={questions[1].placeholder}
                   className="inline-block w-28 border-b-2 border-gray-300 focus:outline-none focus:border-blue-500 text-center bg-gray-50 px-1"
                 />
-                (2)上手ですよ。
+                (3)上手ですよ。
               </p>
             </div>
           </div>
